@@ -13,12 +13,17 @@ public class MainMenu : MonoBehaviour
     private Button infinityButton;
     //private Button settingsButton;
     private Button quitButton;
+    
+  
+    
+    
+    
 
 
     //We find all button objects and make eventlistener for them.
     public void Start()
     {
-
+      
         storyButton = GameObject.Find("StoryButton").GetComponent<Button>();
         infinityButton = GameObject.Find("InfinityButton").GetComponent<Button>();
         //settingsButton = GameObject.Find("SettingsButton").GetComponent<Button>();
@@ -37,11 +42,13 @@ public class MainMenu : MonoBehaviour
        if(button == storyButton)
         {
             SceneManager.LoadScene("Level1");
+            
 
         }
         else if(button == infinityButton)
         {
             SceneManager.LoadScene("InfinityScene");
+            
         }
        //else if(button == settingsButton)
        // {
@@ -54,4 +61,5 @@ public class MainMenu : MonoBehaviour
         }
             
     }
+    
 }
