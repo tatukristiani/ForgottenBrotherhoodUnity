@@ -29,8 +29,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3117143713411925101}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.499, y: -0.712, z: -3.6536462}
-  m_LocalScale: {x: 0.449693, y: 0.5553075, z: 1}
+  m_LocalPosition: {x: 0.499, y: -0.712, z: 0}
+  m_LocalScale: {x: 0.7907869, y: 0.83689827, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -97,15 +97,15 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 0.0001
+  m_Mass: 1
   m_LinearDrag: 0
   m_AngularDrag: 0
   m_GravityScale: 0
   m_Material: {fileID: 0}
   m_Interpolate: 0
   m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
+  m_CollisionDetection: 1
+  m_Constraints: 4
 --- !u!58 &3117143713411925103
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -155,3 +155,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fireballImpactEffect: {fileID: 3170955207033288427, guid: 3846448dd373a9345b7850030d5fc337,
     type: 3}
+  damage: 0

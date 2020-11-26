@@ -5,20 +5,21 @@ using UnityEngine;
 public class PlayerControl : MonoBehaviour
 {
 
-    public float playerSpeed = 5f;
+    public float playerSpeed = 10f;
     private float horizontalMove = 0f;
     private float verticalMove = 0f;
     private bool playerFacingRight = true;
 
-    private Vector2 direction;
+    private Vector3 direction;
     private Rigidbody2D rigidBody;
     public Animator animator;
+   
 
     // Start is called before the first frame update
     void Start()
     {
         rigidBody = GetComponent<Rigidbody2D>();
-        
+     
     }
 
     // Update is called once per frame
@@ -26,14 +27,14 @@ public class PlayerControl : MonoBehaviour
     {
 
         GetInput();
-        PlayerMove();
         
     }
-
-    private void PlayerMove()
+    
+    private void FixedUpdate()
     {
         
-        transform.Translate(direction * playerSpeed * Time.deltaTime);
+        rigidBody.MovePosition(transform.position + direction * playerSpeed * Time.deltaTime);
+        
     }
 
     private void GetInput()
@@ -66,12 +67,12 @@ public class PlayerControl : MonoBehaviour
 
         if(Input.GetKey(KeyCode.W))
         {
-            direction += Vector2.up;
+            direction += Vector3.up;
 
         }
         if(Input.GetKey(KeyCode.S))
         {
-            direction += Vector2.down;
+            direction += Vector3.down;
 
         }
         if(Input.GetKey(KeyCode.A))
@@ -81,7 +82,7 @@ public class PlayerControl : MonoBehaviour
                 Flip();
             }
 
-            direction += Vector2.left;
+            direction += Vector3.left;
 
         }
         if(Input.GetKey(KeyCode.D))
@@ -91,7 +92,7 @@ public class PlayerControl : MonoBehaviour
                 Flip();
             }
 
-            direction += Vector2.right;
+            direction += Vector3.right;
 
         }
     }
@@ -103,10 +104,12 @@ public class PlayerControl : MonoBehaviour
         // Switch the way the player is labelled as facing
         playerFacingRight = !playerFacingRight;
 
-            // Multiply the player's x local scale by -1.
-            Vector3 theScale = transform.localScale;
-            theScale.x *= -1;
-            transform.localScale = theScale;
+        // Multiply the player's x local scale by -1.
+        Vector3 theScale = transform.localScale;
+        theScale.x *= -1;
+        transform.localScale = theScale;
+       
+        
     }
 }
 

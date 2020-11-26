@@ -5,14 +5,13 @@ using UnityEngine;
 public class PlayerAttack : MonoBehaviour
 {
 
-
+    
     public GameObject projectile;
-    private GameObject spell;
     public Transform fireballPosition;
     public Animator animator;
+    
 
-    private float projectileForce = 10f;
-   
+    private float projectileForce = 15f;
 
 
 
@@ -20,14 +19,20 @@ public class PlayerAttack : MonoBehaviour
     {
         if(Input.GetMouseButtonDown(1))
         {
-            animator.SetTrigger("SpellCastTrigger");
-            spell = Instantiate(projectile, fireballPosition.position, fireballPosition.rotation);
-            Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            Vector2 myPosition = transform.position;
-            Vector2 direction = (mousePosition - myPosition).normalized;
-            spell.GetComponent<Rigidbody2D>().velocity = direction * projectileForce;
-            spell.GetComponent<Projectile>().damage = 20;
+            Shoot();
         }
+    }
+
+    private void Shoot()
+    {
+        
+        animator.SetTrigger("SpellCastTrigger");
+        Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        Vector2 myPosition = fireballPosition.position;
+        Vector2 direction = (mousePosition - myPosition).normalized;
+        GameObject spell = Instantiate(projectile, fireballPosition.position, fireballPosition.rotation);
+        spell.GetComponent<Rigidbody2D>().velocity = direction * projectileForce;
+        spell.GetComponent<Projectile>().damage = 20;
     }
   
 }

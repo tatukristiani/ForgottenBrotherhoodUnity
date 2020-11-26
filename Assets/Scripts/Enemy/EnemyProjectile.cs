@@ -5,54 +5,52 @@ using UnityEngine;
 public class EnemyProjectile : MonoBehaviour
 {
     public GameObject fireballImpactEffect;
-    private Transform player;
-    private Vector2 target;
-    
-    private float damage;
-    public float speed;
-   
+
+    private Rigidbody2D rb;
+    private GameObject player;
+    private Vector2 fireDirection;
+
+
+    public float damage = 5f;
+    private float speed = 8f;
+
 
     void Start()
     {
-        player = GameObject.FindGameObjectWithTag("Player").transform;
-        target = new Vector2(player.position.x, player.position.y);
-        damage = 40f;
-        
+        player = GameObject.FindGameObjectWithTag("Player");
+        if (player != null)
+        { 
+           
+            rb = GetComponent<Rigidbody2D>();
+            fireDirection = (player.transform.position - transform.position).normalized * speed;
+
+        }
+       
     }
 
-
-    void Update()
+    private void Update()
     {
         if (player != null)
         {
-
-
-            //Enemy shoot spell on players current location, when reached it explodes.
-            transform.position = Vector2.MoveTowards(transform.position, target, speed * Time.deltaTime);
-
-            if (transform.position.x == target.x && transform.position.y == target.y)
-            {
-                Destroy(gameObject);
-
-            }
+            rb.velocity = new Vector2(fireDirection.x, fireDirection.y);
         }
 
-        if(player == null)
-        {
-            Destroy(gameObject);
-        }
     }
 
     //on player hit, explodes and deals damage to player. Destroys projectile object.
     private void OnTriggerEnter2D(Collider2D collision)
     {
-
-        if(collision.tag == "Player" && collision.tag != "Spell")
+        if (collision.tag != "Enemy" && collision.tag != "Spell")
         {
             Instantiate(fireballImpactEffect, transform.position, Quaternion.identity);
-            PlayerStats.playerStats.DealDamage(damage);
-           
+            Player player = collision.GetComponent<Player>();
+            if (player != null)
+            {
+                player.DamagePlayer(damage);
+                Debug.Log(damage);
+            }
             Destroy(gameObject);
         }
+
     }
 }

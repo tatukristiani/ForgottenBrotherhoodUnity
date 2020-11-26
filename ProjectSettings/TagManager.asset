@@ -6,6 +6,11 @@ TagManager:
   tags:
   - Enemy
   - Spell
+  - EnemyHealthBar
+  - EnemyHealthBarSlider
+  - PlayerFireballPos
+  - EnemySpellPosition
+  - GM
   layers:
   - Default
   - TransparentFX
