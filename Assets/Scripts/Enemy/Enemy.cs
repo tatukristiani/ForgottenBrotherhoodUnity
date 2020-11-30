@@ -7,22 +7,26 @@ using UnityEngine.UI;
 //Class has enemys health, controls healthbar slider and a method to damage the enemy.
 public class Enemy : MonoBehaviour
 {
+
+
+    //[System.Serializable]
+    //public class EnemyStats
+    //{
+    //    public float health = 100f;
+    //}
+
+    //public EnemyStats enemyStats = new EnemyStats();
+
     
-
-    [System.Serializable]
-    public class EnemyStats
-    {
-        public float health = 100f;
-    }
-
-    public EnemyStats enemyStats = new EnemyStats();
-
     public Slider healthBarSlider;
     public GameObject enemyHealthBar;
-    public float maxHealth = 100f;
+    private float health;
+    private float maxHealth = 100f;
 
     private void Start()
-    {  
+    {
+      
+        health = maxHealth;
         enemyHealthBar.SetActive(false);
     }
 
@@ -30,17 +34,16 @@ public class Enemy : MonoBehaviour
     public void DamageEnemy(float damage)
     {
         enemyHealthBar.SetActive(true);
-        enemyStats.health -= damage;
+        health -= damage;
         healthBarSlider.value = AdjustSlider();
-        if (enemyStats.health <= 0)
+        if (health <= 0)
         {
             GameMaster.KillEnemy(this);
         }
     }
 
-
-    private float AdjustSlider()
+    public float AdjustSlider()
     {
-        return (enemyStats.health / maxHealth);
+        return (health / maxHealth);
     }
 }

@@ -6,19 +6,25 @@ using UnityEngine;
 //Player class has its own health. Controls the animation of dying when players health hits 0 or below. And a way to deal damage to player.
 public class Player : MonoBehaviour
 {
-    [System.Serializable]
-    public class PlayerStats
+
+    private float health;
+    private float maxHealth = 100;
+    public HealthBar healthBar;
+    private Animator animator;
+
+
+
+    private void Start()
     {
-        public float health = 100f;
+        animator = GetComponent<Animator>();
+        health = maxHealth;
+        healthBar.SetMaxHealth(health);
     }
-
-    public Animator animator;
-    public PlayerStats playerStats = new PlayerStats();
-
     public void DamagePlayer(float damage)
     {
-        playerStats.health -= damage;
-        if (playerStats.health <= 0)
+        health -= damage;
+        healthBar.SetHealth(health);
+        if (health <= 0)
         {
             animator.SetBool("PlayerIsDead", true);
             GameMaster.KillPlayer(this);
