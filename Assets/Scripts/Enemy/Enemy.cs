@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+
+//Class has enemys health, controls healthbar slider and a method to damage the enemy.
 public class Enemy : MonoBehaviour
 {
     
@@ -20,10 +22,11 @@ public class Enemy : MonoBehaviour
     public float maxHealth = 100f;
 
     private void Start()
-    {
-        
+    {  
         enemyHealthBar.SetActive(false);
     }
+
+
     public void DamageEnemy(float damage)
     {
         enemyHealthBar.SetActive(true);
@@ -34,6 +37,8 @@ public class Enemy : MonoBehaviour
             GameMaster.KillEnemy(this);
         }
     }
+
+
     private float AdjustSlider()
     {
         return (enemyStats.health / maxHealth);

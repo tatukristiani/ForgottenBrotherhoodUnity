@@ -1,57 +1,82 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
+/*This script handles the spawning of waves/levels in infinity mode.*/
 public class WaveSpawner : MonoBehaviour
 {
+
+    //SpawnState tells us what is happening right now.
     public enum SpawnState { SPAWNING, WAITING, COUNTING};
 
+    //Wave class inside, just to simplify..
     [System.Serializable]
     public class Wave
     {
-        public string name;
-        public Transform enemy;
-        public int count;
+        public int level = 1;
+        public Transform enemyPrefab;
+        public int enemyCount;
         public float spawnRate;
-     
     }
 
-    public Wave[] waves;
-    private int nextWave = 0;
-    public float timeBetweenWaves = 5f;
-    public float waveCountdown;
+    //List of Wave objects used so adding waves is possible in code.
+    //First wave added publicly in inspector though.
+    public List<Wave> waves = new List<Wave>();
+    private int waveNumber = 0;
+
+
+    public Transform[] spawnPoints;
+
+    private float timeBetweenWaves = 5f;
+    private float waveCountdown;
     private float enemyAliveCountdown;
-    
+
+    private Text levelText;
+
+
 
     private SpawnState state = SpawnState.COUNTING;
     void Start()
     {
+        if (spawnPoints.Length == 0)
+        {
+            Debug.LogError("No spawnpoints.");
+        }
+
         waveCountdown = timeBetweenWaves;
-       
+        levelText = GameObject.Find("LevelNumber").GetComponent<Text>();
+        levelText.text = "Level 1";
+
     }
+     
 
     void Update()
     {
+        //When all enemies have beens spawned on current wave, the state is WAITING.
         if(state == SpawnState.WAITING)
         {
             //CHECK IF ENEMIES ARE STILL ALIVE
             if (!EnemyIsAlive())
             {
-                //start new wave
+                //If there are no enemies the wave has been completed.
                 WaveCompleted();
+                levelText.text = "Level " + (waveNumber + 1);
+           
+                
             }
             else
             {
                 return;
             }
-
         }
+
         if(waveCountdown <= 0)
         {
             //IF NOT SPAWNING START SPAWNING
             if(state != SpawnState.SPAWNING)
             {
-                StartCoroutine(SpawnWave(waves[nextWave]));
+                StartCoroutine(SpawnWave(waves[waveNumber]));
             }
         }
         else
@@ -59,6 +84,9 @@ public class WaveSpawner : MonoBehaviour
             waveCountdown -= Time.deltaTime;
         }
     }
+
+
+    //Check if any enemies are still alive.
     bool EnemyIsAlive()
     {
         enemyAliveCountdown -= Time.deltaTime;
@@ -73,44 +101,48 @@ public class WaveSpawner : MonoBehaviour
         return true;
     }
 
+
+    //After wave has been completed, adds +1 to waveNumber and start countdown for next wave.
     void WaveCompleted()
     {
-        Debug.Log("Wave done");
+        Debug.Log("Wave Completed!");
 
         state = SpawnState.COUNTING;
         waveCountdown = timeBetweenWaves;
-
-        if (nextWave + 1 > waves.Length - 1)
-        {
-            nextWave = 0;
-            Debug.Log("Waves completed Looping...");
-        }
-        else
-        {
-            nextWave++;
-        }  
+        
+        Debug.Log("Next wave starting!");
+        
+        waveNumber++;    
     }
 
-    //SPAWNS ENEMIES FROM ARRAY WITH A CERTAIN SPAWNRATE
+    //SPAWNS ENEMIES FROM THE WAVE LIST WITH A CERTAIN SPAWNRATE. IEnumerator used so it is possible to have a delay in spawning the enemies.
     IEnumerator SpawnWave(Wave wave)
     {
-        Debug.Log("Spawning wave" + wave.name);
-        state = SpawnState.SPAWNING;
 
-        for(int i = 0; i < wave.count; i++)
+        Debug.Log("Spawning wave" + wave.level);
+        state = SpawnState.SPAWNING;
+        
+        for (int i = 0; i < wave.enemyCount; i++)
         {
-            SpawnEnemy(wave.enemy);
+            SpawnEnemy(wave.enemyPrefab);
             yield return new WaitForSeconds(1f / wave.spawnRate);
         }
 
         state = SpawnState.WAITING;
+
+        //after all enemies have been spawned we create a new wave beforehand using the last levels info. (level + 1, enemies + 3 every wave, everything else stays the same)
+        waves.Add(new Wave { level = wave.level + 1, enemyPrefab = wave.enemyPrefab, enemyCount = wave.enemyCount += 3, spawnRate = wave.spawnRate });
+
+
+        Debug.Log("Spawned all enemies.");
         yield break;
     }
 
+    //This method spawns the enemy randomly to one of the 8 spawnpoints.
     void SpawnEnemy(Transform enemy)
     {
-        //spawn enemy
-        Instantiate(enemy, transform.position, transform.rotation);
-        Debug.Log("Spawning enemy" + enemy.name);
+        Transform spawnPoint = spawnPoints[Random.Range(0, spawnPoints.Length)];
+        Instantiate(enemy, spawnPoint.position,spawnPoint.rotation);
+        Debug.Log("Spawning enemy");
     }
 }

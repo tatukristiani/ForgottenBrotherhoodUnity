@@ -10,10 +10,8 @@ public class EnemyProjectile : MonoBehaviour
     private GameObject player;
     private Vector2 fireDirection;
 
-
-    public float damage = 5f;
+    private float damage = 10f;
     private float speed = 8f;
-
 
     void Start()
     {
@@ -24,8 +22,7 @@ public class EnemyProjectile : MonoBehaviour
             rb = GetComponent<Rigidbody2D>();
             fireDirection = (player.transform.position - transform.position).normalized * speed;
 
-        }
-       
+        } 
     }
 
     private void Update()
@@ -34,10 +31,10 @@ public class EnemyProjectile : MonoBehaviour
         {
             rb.velocity = new Vector2(fireDirection.x, fireDirection.y);
         }
-
     }
 
-    //on player hit, explodes and deals damage to player. Destroys projectile object.
+
+    //on player hit, explodes and deals damage to player. Destroys projectile object. Explodes on wall, but no damage applied.
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.tag != "Enemy" && collision.tag != "Spell")
@@ -47,10 +44,8 @@ public class EnemyProjectile : MonoBehaviour
             if (player != null)
             {
                 player.DamagePlayer(damage);
-                Debug.Log(damage);
             }
             Destroy(gameObject);
         }
-
     }
 }

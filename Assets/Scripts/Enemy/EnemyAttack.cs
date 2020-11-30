@@ -3,14 +3,16 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+
+//EnemyAttack class handles the enemy "AI" and how it reacts to player position.
 public class EnemyAttack : MonoBehaviour
 {
    
-    private float chaseSpeed;
-    private float idleDistance = 6f;
-    private float retreatDistance = 4f;
-    private float detectDistance;
-    private float timeBtwShots;
+    private float chaseSpeed; //speed of enemy
+    private float idleDistance = 6f; //the distance when enemy is idle.
+    private float retreatDistance = 4f; //the distance when enemy starts to walk away from player while still shooting
+    private float detectDistance; //the distance when the enemy is able to detect player.
+    private float timeBtwShots; //enemys shooting cooldown
     private float startTimeBtwShots = 2f;
     private bool attemptedChase = false;
     private bool enemyFacingRight = true;
@@ -22,10 +24,7 @@ public class EnemyAttack : MonoBehaviour
     private Vector3 originalPosition;
 
 
-    
-
-
-
+    //On the Start() we check if we are on the infinity scene, set the detect distance so the enemies detect allways the player and increase the chase speed. 
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player").transform;
@@ -47,7 +46,7 @@ public class EnemyAttack : MonoBehaviour
                 chaseSpeed = 1f;
             }
         }
-
+       
     }
 
 
@@ -56,13 +55,14 @@ public class EnemyAttack : MonoBehaviour
 
         if (player != null)
         {
-
-
-            //BUGG HERE
+          
+            //If player is in distance it starts to chase/shoot. This allways happends in infinity mode.
             if (player != null && DistanceBetweenPlayerAndEnemy() < detectDistance)
             {
                 Chase();
             }
+
+            //If player is not in detect distance the enemy goes back to its original position.
             else if (player != null && DistanceBetweenPlayerAndEnemy() > detectDistance)
             {
                 Flee();
@@ -71,7 +71,7 @@ public class EnemyAttack : MonoBehaviour
 
             if (timeBtwShots <= 0)
             {
-                //BUG HERE
+                
                 animator.SetTrigger("EnemyUseSpell");
 
                 Instantiate(projectile, spellPosition.position, Quaternion.identity);
@@ -81,15 +81,18 @@ public class EnemyAttack : MonoBehaviour
             {
                 timeBtwShots -= Time.deltaTime;
             }
-        }
-        
+        }    
     }
 
+
+    //Gets the distance betwenn player and enemy.
     private float DistanceBetweenPlayerAndEnemy()
     {
         return Vector2.Distance(transform.position, player.position);
     }
 
+
+    //returns to original position where the enemy started chasing.
     private void Flee()
     {
         ReturnToOriginalDirection();
@@ -136,9 +139,9 @@ public class EnemyAttack : MonoBehaviour
             }
             attemptedChase = true;
         }
-
     }
 
+    //Flips the enemy by checking where the player is and the enemy is currently.
     private void ChaseDirection()
     {
 
@@ -147,19 +150,19 @@ public class EnemyAttack : MonoBehaviour
             if(enemyFacingRight)
             {
                 Flip();
-            }
-            
-            
+            }  
         }
         else if(player.position.x > transform.position.x)
         {
             if(!enemyFacingRight)
             {
                 Flip();
-            }
-            
+            }   
         }
     }
+
+
+    //Flips the enemy depending on the direction where it is going when returning to original position by using the difference between original position and current position.
     private void ReturnToOriginalDirection()
     {
         if(transform.position.x > originalPosition.x)
@@ -167,8 +170,7 @@ public class EnemyAttack : MonoBehaviour
             if(enemyFacingRight)
             {
                 Flip();
-            }
-           
+            }  
         }
         else if(transform.position.x < originalPosition.x)
         {
@@ -178,6 +180,9 @@ public class EnemyAttack : MonoBehaviour
             }
         }
     }
+
+
+    //Flips the characters facing.
     private void Flip()
     {
         // Switch the way the player is labelled as facing
@@ -186,9 +191,7 @@ public class EnemyAttack : MonoBehaviour
         // Multiply the player's x local scale by -1.
         Vector3 theScale = transform.localScale;
         theScale.x *= -1;
-        transform.localScale = theScale;
-        
+        transform.localScale = theScale;    
     }
-
 }
 

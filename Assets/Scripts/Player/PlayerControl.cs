@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+
+//PlayerControl class controls the players movement.
 public class PlayerControl : MonoBehaviour
 {
 
@@ -19,24 +21,22 @@ public class PlayerControl : MonoBehaviour
     void Start()
     {
         rigidBody = GetComponent<Rigidbody2D>();
-     
     }
 
     // Update is called once per frame
     void Update()
-    {
-
-        GetInput();
-        
+    { 
+        GetInput();   
     }
     
+
     private void FixedUpdate()
-    {
-        
-        rigidBody.MovePosition(transform.position + direction * playerSpeed * Time.deltaTime);
-        
+    {   
+        rigidBody.MovePosition(transform.position + direction * playerSpeed * Time.deltaTime);  
     }
 
+
+    //GetInput checks if the player is moving at all, or is moving vertically/horizontally and sets the animation accordingly. -> ...
     private void GetInput()
     {
 
@@ -61,20 +61,25 @@ public class PlayerControl : MonoBehaviour
         }
 
         
-        
 
-
-
+        /*We get the input from the user and move accordinlgy and if the direction where the player wants to go doesn't match the facing direction of the character
+         * we use the methdo Flip() to change the sprites facing direction.
+         * 
+        */
         if(Input.GetKey(KeyCode.W))
         {
             direction += Vector3.up;
 
         }
+
+
         if(Input.GetKey(KeyCode.S))
         {
             direction += Vector3.down;
 
         }
+
+
         if(Input.GetKey(KeyCode.A))
         {
             if(playerFacingRight)
@@ -85,6 +90,8 @@ public class PlayerControl : MonoBehaviour
             direction += Vector3.left;
 
         }
+
+
         if(Input.GetKey(KeyCode.D))
         {
             if(!playerFacingRight)
@@ -107,9 +114,7 @@ public class PlayerControl : MonoBehaviour
         // Multiply the player's x local scale by -1.
         Vector3 theScale = transform.localScale;
         theScale.x *= -1;
-        transform.localScale = theScale;
-       
-        
+        transform.localScale = theScale; 
     }
 }
 

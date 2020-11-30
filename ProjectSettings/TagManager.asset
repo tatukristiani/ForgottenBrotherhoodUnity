@@ -11,6 +11,8 @@ TagManager:
   - PlayerFireballPos
   - EnemySpellPosition
   - GM
+  - SpawnPoint
+  - LevelText
   layers:
   - Default
   - TransparentFX

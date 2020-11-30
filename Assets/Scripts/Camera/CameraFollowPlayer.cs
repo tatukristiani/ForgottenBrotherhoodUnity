@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+
+//class is used to make the camera follow player. NOT used in infinity mode.
 public class CameraFollowPlayer : MonoBehaviour
 {
 
@@ -24,7 +26,6 @@ public class CameraFollowPlayer : MonoBehaviour
             Vector3 newPosition = Vector3.Lerp(transform.position, player.transform.position + camerasOffset, smoothness);
             transform.position = newPosition;
 
-        }
-        
+        }  
     }
 }

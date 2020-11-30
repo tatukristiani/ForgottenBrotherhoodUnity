@@ -5,10 +5,8 @@ using UnityEngine;
 public class Projectile : MonoBehaviour
 {
     public GameObject fireballImpactEffect;
-  
     public float damage = 20f;
     
-
 
     //on enemy hit deals damage to enemy and explodes, destory projectile object.
     private void OnTriggerEnter2D(Collider2D collision)
@@ -22,8 +20,8 @@ public class Projectile : MonoBehaviour
             {
                 enemy.DamageEnemy(damage);
             }
+
             Destroy(gameObject);
-        }
-           
+        }     
     }
 }
