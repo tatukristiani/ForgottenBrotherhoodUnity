@@ -23,7 +23,8 @@ public class WaveSpawner : MonoBehaviour
     //List of Wave objects used so adding waves is possible in code.
     //First wave added publicly in inspector though.
     public List<Wave> waves = new List<Wave>();
-    private int waveNumber = 0;
+    public static int fixedWaveNumber = 0; //Just a quick fix so that displaying the round lasted on game over was possible.
+    public int waveNumber = 0; 
 
 
     public Transform[] spawnPoints;
@@ -33,6 +34,8 @@ public class WaveSpawner : MonoBehaviour
     private float enemyAliveCountdown;
 
     private Text levelText;
+
+
 
 
 
@@ -112,13 +115,14 @@ public class WaveSpawner : MonoBehaviour
         
         Debug.Log("Next wave starting!");
         
-        waveNumber++;    
+        waveNumber++;
+        fixedWaveNumber++;
     }
 
     //SPAWNS ENEMIES FROM THE WAVE LIST WITH A CERTAIN SPAWNRATE. IEnumerator used so it is possible to have a delay in spawning the enemies.
     IEnumerator SpawnWave(Wave wave)
     {
-
+       
         Debug.Log("Spawning wave" + wave.level);
         state = SpawnState.SPAWNING;
         
@@ -145,4 +149,6 @@ public class WaveSpawner : MonoBehaviour
         Instantiate(enemy, spawnPoint.position,spawnPoint.rotation);
         Debug.Log("Spawning enemy");
     }
+
+
 }

@@ -13,6 +13,7 @@ TagManager:
   - GM
   - SpawnPoint
   - LevelText
+  - LastedRoundsText
   layers:
   - Default
   - TransparentFX
