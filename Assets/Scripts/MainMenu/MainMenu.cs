@@ -25,7 +25,12 @@ public class MainMenu : MonoBehaviour
         infinityButton.onClick.AddListener(() => ButtonClicked(infinityButton));
         quitButton.onClick.AddListener(() => ButtonClicked(quitButton));
 
+        AudioManager.instance.Stop("InfinityMusic");
+        AudioManager.instance.Play("MainMenuMusic");
+
     }
+
+  
 
     //When a button from main menu is clicked, this function tells what scene to load.
     private void ButtonClicked(Button button)

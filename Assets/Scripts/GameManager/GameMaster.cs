@@ -19,7 +19,15 @@ public class GameMaster : MonoBehaviour
 
         gameOverUI.SetActive(false);
 
+        AudioManager.instance.Stop("MainMenuMusic");
+        
+        AudioManager.instance.Play("InfinityMusic");
+
     }
+
+
+          
+   
 
     //public Transform enemyPrefab;
     //public Transform spawnPoint;

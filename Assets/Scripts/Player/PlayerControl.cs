@@ -11,6 +11,7 @@ public class PlayerControl : MonoBehaviour
     private float horizontalMove = 0f;
     private float verticalMove = 0f;
     private bool playerFacingRight = true;
+    private bool gamePaused = false;
 
     private Vector3 direction;
     private Rigidbody2D rigidBody;
