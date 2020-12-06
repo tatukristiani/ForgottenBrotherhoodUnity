@@ -3,6 +3,7 @@ using UnityEngine.SceneManagement;
 
 
 //This class handles destroying of enemy and player. + Setting up the pause screen and game over screen.
+//Music starting and stopping added allso.
 public class GameMaster : MonoBehaviour
 {
     public static GameMaster gm;
@@ -44,6 +45,7 @@ public class GameMaster : MonoBehaviour
     }
 
     //We just check if player uses Escape key.
+    //Check if on first level of story -> display instructions.
     private void Update()
     {
         CheckPlayerPause();
@@ -51,6 +53,7 @@ public class GameMaster : MonoBehaviour
     }
 
     //Destroys player gameobject after 2seconds and call GameOver() method.
+    //Sets player to null so EnemyAttack won't have reference error.
     public static void KillPlayer(Player player)
     {
         Destroy(player.gameObject, 2f);
@@ -65,11 +68,13 @@ public class GameMaster : MonoBehaviour
         
     }
 
+    //Kills boss and displays winning screen.
     public static void KillBoss(Enemy enemy)
     {
         Destroy(enemy.gameObject, 2f);
         gm.GameWon();
     }
+
     //Starts the GameOverScreen when called.
     public void GameOver()
     {
@@ -77,6 +82,7 @@ public class GameMaster : MonoBehaviour
         gameOverUI.SetActive(true);
     }
 
+    //Start the gamewon screen.
     public void GameWon()
     {
         Debug.Log("GAME WON!");
@@ -103,6 +109,7 @@ public class GameMaster : MonoBehaviour
     }
 
 
+    //Method checks if the story is started from the beginning and displays the instructions. Disables them when second level starts.
     public void CheckIfInstructionsNeeded()
     {
         if(SceneManager.GetActiveScene() == SceneManager.GetSceneByName("StoryScene"))

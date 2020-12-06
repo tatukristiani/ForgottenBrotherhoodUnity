@@ -5,10 +5,11 @@ using UnityEngine.Audio;
 
 
 /*CODE REFERENCE: https://www.youtube.com/watch?v=6OT43pvUyfY&ab_channel=Brackeys */
+//This class handles the music in the game, wont be destoryed on scene switch.
 public class AudioManager : MonoBehaviour
 {
 
-    public Sound[] sounds;
+    public Sound[] sounds; //array of Sound object to add easily to inspector.
 
     public static AudioManager instance;
 
@@ -16,6 +17,7 @@ public class AudioManager : MonoBehaviour
     public bool isMuted = false;
 
 
+    //On awake we want to be sure there is only one audiomanager, so if there isnt one we make one and if there is one we delete this one.
     private void Awake()
     {
         if(instance == null)
@@ -79,6 +81,7 @@ public class AudioManager : MonoBehaviour
 
     }
 
+
     //UnMuteMusic sets volume for specific value that is wanted for a specific music. Changes isMuted variable.
     public void UnMuteMusic()
     {
@@ -97,7 +100,6 @@ public class AudioManager : MonoBehaviour
             {
                 sounds[i].source.volume = 0.1f;
             }
-
         }
     }
 }

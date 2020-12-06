@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+
+//This class handles player shooting.
 public class PlayerAttack : MonoBehaviour
 {
 

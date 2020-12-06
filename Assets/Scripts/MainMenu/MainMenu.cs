@@ -52,16 +52,13 @@ public class MainMenu : MonoBehaviour
        if(button == storyButton)
         {
             SceneManager.LoadScene("StoryScene");    
-
         }
         else if(button == infinityButton)
         {
             SceneManager.LoadScene("InfinityScene");
-            
         }
        else if(button == quitButton)
         {
-            Debug.Log("Quitting game now!");
             Application.Quit();
         }
        

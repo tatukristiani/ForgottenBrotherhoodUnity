@@ -4,6 +4,7 @@ using UnityEngine.SceneManagement;
 
 
 //Class to handle Pause Interface when esc button is clicked.
+//infinity and story modes levels are allso affected when pressing certain button, since they save their last numbers.
 public class PauseUI : MonoBehaviour
 {
 
@@ -56,11 +57,15 @@ public class PauseUI : MonoBehaviour
         {
             GameMaster.gm.GameContinue();
             SceneManager.LoadScene("MenuScene");
+
+            //if we press menubutton in infinityscene, infinity scenes display number is resetted to 0.
+            //And storys level is set to -1 since 0 will go straight to level with enemies.
             if (SceneManager.GetActiveScene() == SceneManager.GetSceneByName("InfinityScene"))
             {
                 WaveSpawner.fixedWaveNumber = resetInfinity;
                 GameManager.level = resetStory;
             }
+            //if we press menubutton on storyscene we want to reset the story so it wont skip levels when coming straight back from main menu.
             else if (SceneManager.GetActiveScene() == SceneManager.GetSceneByName("StoryScene"))
             {
                 GameManager.level = resetStory;

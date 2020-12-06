@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+
+//Class for healthbars
 public class HealthBar : MonoBehaviour
 {
 

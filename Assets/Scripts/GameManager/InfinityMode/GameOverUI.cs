@@ -4,6 +4,7 @@ using UnityEngine.SceneManagement;
 
 
 //This class handles the onClick events of GameOverScreen in infinitymode and acts accordingly.
+//Also resets the storys level and infinitys level display variable. (allmost same as in GamePause class)
 public class GameOverUI : MonoBehaviour
 {
     private Button retryButton;
@@ -21,6 +22,7 @@ public class GameOverUI : MonoBehaviour
         
         lastedRoundsText = GameObject.Find("LastedRoundsText").GetComponent<Text>();
 
+        //Set the game over text according to scene. 
         if(SceneManager.GetActiveScene() == SceneManager.GetSceneByName("InfinityScene"))
         { 
             infinityRound = WaveSpawner.fixedWaveNumber;
@@ -41,11 +43,7 @@ public class GameOverUI : MonoBehaviour
             lastedRoundsText.text = "YOU DIED";
         }
        
-        
 
-       
-        
-    
         retryButton = GameObject.Find("RetryButton").GetComponent<Button>();
         returnButton = GameObject.Find("ReturnToMainMenuButton").GetComponent<Button>();
 

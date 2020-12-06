@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-//class is used to make the camera follow player. NOT used in infinity mode.
+/*THIS CLASS ISN'T USED ANYWHERE, MADE THIS FOR FUTURE DEVELOPMENT*/
 public class CameraFollowPlayer : MonoBehaviour
 {
 

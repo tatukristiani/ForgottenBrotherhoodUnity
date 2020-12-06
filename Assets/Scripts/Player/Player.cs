@@ -45,6 +45,7 @@ public class Player : MonoBehaviour
         }
     }
 
+    //start next level when colliding with the portal.
     private void OnTriggerEnter2D(Collider2D other)
     {
 

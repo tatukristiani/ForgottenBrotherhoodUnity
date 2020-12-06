@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+
+//Player projectile class. handles collision, explosion animation and damaging mostly.
 public class Projectile : MonoBehaviour
 {
     public GameObject fireballImpactEffect;

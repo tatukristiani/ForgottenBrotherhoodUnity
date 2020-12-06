@@ -3,7 +3,6 @@ using UnityEngine.SceneManagement;
 
 
 //EnemyAttack class handles the enemy "AI" and how it reacts to player position.
-//Lots of player != nulls can be found due to couple of errors in the past :D. Too scared to take them off.
 public class EnemyAttack : MonoBehaviour
 {
    
@@ -27,17 +26,18 @@ public class EnemyAttack : MonoBehaviour
     //On the Start() we check if we are on the infinity scene, set the detect distance so the enemies detect allways the player and increase the chase speed. 
     void Start()
     {
-
+        /*we use this object to find player and check if its dead or not. when player is dead, it is set to null in GameMaster -> KillPlayer()*/
         playerPrefab = GameObject.FindGameObjectWithTag("Player");
+        
         
         if (playerPrefab != null)
         {
             player = GameObject.FindGameObjectWithTag("Player").transform;
-            Debug.Log(player);
             animator = GetComponent<Animator>();
-            timeBtwShots = startTimeBtwShots;
-            originalPosition = gameObject.transform.position;
+            timeBtwShots = startTimeBtwShots; //give cooldown the amount of seconds 
+            originalPosition = gameObject.transform.position; //used for calculating were to go after player is out of sight.
 
+            //in infinityscene enemies detect allways.
             if (SceneManager.GetActiveScene() == SceneManager.GetSceneByName("InfinityScene"))
             {
                 detectDistance = 100f;
@@ -59,7 +59,7 @@ public class EnemyAttack : MonoBehaviour
         if (player != null)
         {
           
-            //If player is in distance it starts to chase/shoot. This allways happends in infinity mode.
+            //If player is in distance it starts to chase/shoot. This allways happens in infinity mode.
             if (player != null && DistanceBetweenPlayerAndEnemy() < detectDistance)
             {
                 Chase();
@@ -73,7 +73,7 @@ public class EnemyAttack : MonoBehaviour
             }
 
 
-            //Shooting cooldown.
+            //Shooting cooldown. Enemy makes animation and instantiates projectile if cooldown has reached 0.
             if (timeBtwShots <= 0)
             {
 
@@ -102,6 +102,7 @@ public class EnemyAttack : MonoBehaviour
     {
         ReturnToOriginalDirection();
 
+        //if enemy has chased the player it will trigger animation for walking and walks back to its original position.
         if (attemptedChase)
         {
             animator.SetFloat("EnemySpeed", chaseSpeed);
@@ -113,7 +114,7 @@ public class EnemyAttack : MonoBehaviour
             }
 
         }
-        else
+        else //stops the enemy when it has reached the original position
         {
             animator.SetFloat("EnemySpeed", 0f);
             transform.position = this.transform.position;

@@ -117,12 +117,12 @@ public class BoardManager : MonoBehaviour
 
             InitialiseList();
 
-            if (level == bossLevel)
+            if (level == bossLevel) //if on boss level, creates the boss.
             {
                 int boss = 1;
                 LayoutObjectAtRandom(bossTile, boss, boss);
             }
-            else
+            else //on normal levels creates enemies level * 4, and sets levelLoaded to true so in update we can start checking when all enemies are dead.
             {
                 LayoutObjectAtRandom(wallTiles, wallCount.minimum, wallCount.maximum);
                 int enemyCount = level * 4;
@@ -137,6 +137,7 @@ public class BoardManager : MonoBehaviour
         if(SceneManager.GetActiveScene() == SceneManager.GetSceneByName("StoryScene") && levelLoaded)
         {
     
+            //we create exit possibility only when enemies have been killed and not after boss level.
             if(!EnemyIsAlive())
             {
                 Instantiate(exit, new Vector3(columns - 1, rows - 1, 0f), Quaternion.identity);
@@ -145,6 +146,8 @@ public class BoardManager : MonoBehaviour
             }
         }
     }
+
+    //check if enemies are still alive.
     private bool EnemyIsAlive()
     {
         if(GameObject.FindGameObjectWithTag("Enemy") == null)

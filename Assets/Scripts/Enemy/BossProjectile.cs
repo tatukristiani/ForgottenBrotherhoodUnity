@@ -1,5 +1,8 @@
 ﻿using UnityEngine;
 
+
+//This class is allmost a copy of enemys projectile with slight changes.
+//Due to lack of time, didn't realise that these changes should've been made in enemyprojectile. Much simpler.
 public class BossProjectile : MonoBehaviour
 {
     public GameObject fireballImpactEffect;

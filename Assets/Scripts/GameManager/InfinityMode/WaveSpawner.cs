@@ -24,7 +24,7 @@ public class WaveSpawner : MonoBehaviour
     //List of Wave objects used so adding waves is possible in code.
     //First wave added publicly in inspector though.
     public List<Wave> waves = new List<Wave>();
-    public static int fixedWaveNumber = 0; //Just a quick fix so that displaying the round lasted on game over was possible.
+    public static int fixedWaveNumber = 0; //Just a quick fix so that displaying the round lasted on game over was possible.(to save time)
     public int waveNumber = 0; 
 
 
@@ -66,7 +66,7 @@ public class WaveSpawner : MonoBehaviour
             //CHECK IF ENEMIES ARE STILL ALIVE
             if (!EnemyIsAlive())
             {
-                //If there are no enemies the wave has been completed.
+                //If there are no enemies the wave has been completed. Change level text.
                 WaveCompleted();
                 levelText.text = "Level " + (waveNumber + 1);
            
@@ -109,20 +109,18 @@ public class WaveSpawner : MonoBehaviour
     }
 
 
-    //After wave has been completed, adds +1 to waveNumber and start countdown for next wave.
+    //After wave has been completed, adds +1 to waveNumber and start countdown for next wave and +1 to fixedWaveNumber that is used to display the level.
     void WaveCompleted()
     {
-        Debug.Log("Wave Completed!");
+        //Wave completed ->
 
         state = SpawnState.COUNTING;
         waveCountdown = timeBetweenWaves;
         
-        Debug.Log("Next wave starting!");
+        //Next wave starting ->
         
         waveNumber++;
         fixedWaveNumber++;
-
-        Debug.Log(fixedWaveNumber + "in spawner");
     }
 
     //SPAWNS ENEMIES FROM THE WAVE LIST WITH A CERTAIN SPAWNRATE. IEnumerator used so it is possible to have a delay in spawning the enemies.
@@ -144,7 +142,7 @@ public class WaveSpawner : MonoBehaviour
         waves.Add(new Wave { level = wave.level + 1, enemyPrefab = wave.enemyPrefab, enemyCount = wave.enemyCount += 3, spawnRate = wave.spawnRate });
 
 
-        Debug.Log("Spawned all enemies.");
+        //All enemies have been spawned ->
         yield break;
     }
 

@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 
-/*CODE REFERENCE: https://www.youtube.com/watch?v=6OT43pvUyfY&ab_channel=Brackeys*/
+/*CODE REFERENCE: https://www.youtube.com/watch?v=6OT43pvUyfY&ab_channel=Brackeys */
+//This class is used to make the audio clips more easily managed. Adding/deleting/changing values.
 [System.Serializable]
 public class Sound
 {

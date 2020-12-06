@@ -3,6 +3,7 @@ using UnityEngine.UI;
 
 
 //Class has enemys health, controls healthbar slider and a method to damage the enemy.
+//Also bosses -**-
 public class Enemy : MonoBehaviour
 {
     
@@ -17,6 +18,7 @@ public class Enemy : MonoBehaviour
     
 
     //We set the health to be maxhealth and deactivate the healthbar so its not yet visible.
+    //sets the hp depengind on the object, enemy/boss
     private void Start()
     {
         if (gameObject.tag == "Enemy")
