@@ -1,7 +1,7 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
+
+//This class handles the movement of enemys projectile AKA Fireblast and what happens when it collides.
 public class EnemyProjectile : MonoBehaviour
 {
     public GameObject fireballImpactEffect;
@@ -10,9 +10,12 @@ public class EnemyProjectile : MonoBehaviour
     private GameObject player;
     private Vector2 fireDirection;
 
+    private bool enemyProjectileFacingRight = true;
     private float damage = 10f;
     private float speed = 8f;
 
+
+    //We find player object and give direction and speed for the projectile.
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player");
@@ -20,19 +23,25 @@ public class EnemyProjectile : MonoBehaviour
         { 
            
             rb = GetComponent<Rigidbody2D>();
-            fireDirection = (player.transform.position - transform.position).normalized * speed;
+            fireDirection = (player.transform.position - transform.position).normalized * speed; //projectiles direction is going towards the player current positon when the projectile is first created.
+            rb.velocity = new Vector2(fireDirection.x, fireDirection.y);
 
+            if (player.transform.position.x < transform.position.x)
+            {
+                if (enemyProjectileFacingRight)
+                {
+                    Flip();
+                }
+            }
+            else if (player.transform.position.x > transform.position.x)
+            {
+                if (!enemyProjectileFacingRight)
+                {
+                    Flip();
+                }
+            }
         } 
     }
-
-    private void Update()
-    {
-        if (player != null)
-        {
-            rb.velocity = new Vector2(fireDirection.x, fireDirection.y);
-        }
-    }
-
 
     //on player hit, explodes and deals damage to player. Destroys projectile object. Explodes on wall, but no damage applied.
     private void OnTriggerEnter2D(Collider2D collision)
@@ -47,5 +56,16 @@ public class EnemyProjectile : MonoBehaviour
             }
             Destroy(gameObject);
         }
+    }
+
+    private void Flip()
+    {
+        // Switch the way the player is labelled as facing
+        enemyProjectileFacingRight = !enemyProjectileFacingRight;
+
+        // Multiply the player's x local scale by -1.
+        Vector3 theScale = transform.localScale;
+        theScale.x *= -1;
+        transform.localScale = theScale;
     }
 }

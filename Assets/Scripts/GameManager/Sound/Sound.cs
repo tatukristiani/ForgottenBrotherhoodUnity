@@ -1,5 +1,4 @@
-﻿using UnityEngine.Audio;
-using UnityEngine;
+﻿using UnityEngine;
 
 /*CODE REFERENCE: https://www.youtube.com/watch?v=6OT43pvUyfY&ab_channel=Brackeys*/
 [System.Serializable]

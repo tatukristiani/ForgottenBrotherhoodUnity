@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
@@ -12,23 +10,40 @@ public class GameOverUI : MonoBehaviour
     private Button returnButton;
     public Text lastedRoundsText;
 
-    private static int round;
+    private static int infinityRound;
+    private int resetStory = -1;
+    private int resetInfinity = 0;
+
 
     private void Start()
     {
-        lastedRoundsText = GameObject.Find("LastedRoundsText").GetComponent<Text>();
-        round = WaveSpawner.fixedWaveNumber;
 
-        if(round == 1)
-        {
-            lastedRoundsText.text = "You lasted " + round + " round.";
-
-        }
-        else
-        {
-            lastedRoundsText.text = "You lasted " + round + " rounds.";
-        }
         
+        lastedRoundsText = GameObject.Find("LastedRoundsText").GetComponent<Text>();
+
+        if(SceneManager.GetActiveScene() == SceneManager.GetSceneByName("InfinityScene"))
+        { 
+            infinityRound = WaveSpawner.fixedWaveNumber;
+
+            if (infinityRound == 1)
+            {
+                lastedRoundsText.text = "You lasted " + infinityRound + " round.";
+
+            }
+            else
+            {
+                lastedRoundsText.text = "You lasted " + infinityRound + " rounds.";
+            }
+        
+        }
+        else if(SceneManager.GetActiveScene() == SceneManager.GetSceneByName("StoryScene"))
+        {
+            lastedRoundsText.text = "YOU DIED";
+        }
+       
+        
+
+       
         
     
         retryButton = GameObject.Find("RetryButton").GetComponent<Button>();
@@ -38,18 +53,29 @@ public class GameOverUI : MonoBehaviour
         returnButton.onClick.AddListener(() => ButtonClicked(returnButton));
     }
 
+
     private void ButtonClicked(Button button)
     {
         if (button == retryButton)
         {
-            Debug.Log("Retrying");
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+            if(SceneManager.GetActiveScene() == SceneManager.GetSceneByName("InfinityScene"))
+            {
+                WaveSpawner.fixedWaveNumber = resetInfinity;
+                SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+            }
+            else
+            {
+                GameManager.level = resetStory + 1;
+                SceneManager.LoadScene("StoryScene");
+            }
+            
 
         }
         else if (button == returnButton)
         {
-            Debug.Log("Returned to main menu");
+            WaveSpawner.fixedWaveNumber = resetInfinity;
             SceneManager.LoadScene("MenuScene");
+            GameManager.level = resetStory;
 
         }
     }

@@ -1,36 +1,43 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 
 //Class has enemys health, controls healthbar slider and a method to damage the enemy.
 public class Enemy : MonoBehaviour
 {
-
-
-    //[System.Serializable]
-    //public class EnemyStats
-    //{
-    //    public float health = 100f;
-    //}
-
-    //public EnemyStats enemyStats = new EnemyStats();
-
     
     public Slider healthBarSlider;
     public GameObject enemyHealthBar;
     private float health;
-    private float maxHealth = 100f;
+    private float maxHealth = 200f;
+    private float bossMaxHealth = 4000f;
+    private float adjustHealth;
 
+    private Animator animator;
+    
+
+    //We set the health to be maxhealth and deactivate the healthbar so its not yet visible.
     private void Start()
     {
-      
-        health = maxHealth;
+        if (gameObject.tag == "Enemy")
+        {
+            health = maxHealth;
+            adjustHealth = maxHealth;
+        }
+
+        if (gameObject.tag == "Boss")
+        {
+            animator = GetComponent<Animator>();
+            health = bossMaxHealth;
+            adjustHealth = bossMaxHealth;
+        }
+
         enemyHealthBar.SetActive(false);
     }
 
 
+    //When enemy get damaged, activates healthbar, subtracts the parameters amount from health and adjusts the slider.
+    //If enemys health goes to <= 0, GameMasters KillEnemy is called and it destroys the object.
     public void DamageEnemy(float damage)
     {
         enemyHealthBar.SetActive(true);
@@ -38,12 +45,28 @@ public class Enemy : MonoBehaviour
         healthBarSlider.value = AdjustSlider();
         if (health <= 0)
         {
-            GameMaster.KillEnemy(this);
+            if(gameObject.tag == "Enemy")
+            {
+                GameMaster.KillEnemy(this);
+            }
+
+            if(gameObject.tag == "Boss")
+            {
+                enemyHealthBar.SetActive(false);
+                animator.SetBool("bossIsDead", true);
+                GameMaster.KillBoss(this);
+            }
+            
         }
     }
 
+    public float GetHealth()
+    {
+        return health;
+    }
+    //Adjust the slider to current health.
     public float AdjustSlider()
     {
-        return (health / maxHealth);
+        return (health / adjustHealth);
     }
 }

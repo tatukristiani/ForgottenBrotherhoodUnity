@@ -1,14 +1,26 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.UI;
+﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 
+
+//This class handles destroying of enemy and player. + Setting up the pause screen and game over screen.
 public class GameMaster : MonoBehaviour
 {
     public static GameMaster gm;
 
     [SerializeField]
     private GameObject gameOverUI;
+
+    [SerializeField]
+    private GameObject pauseUI;
+
+    [SerializeField]
+    private GameObject gameWonUI;
+
+    [SerializeField]
+    private GameObject storyIntructionsUI;
+
+    private bool isPaused;
+
 
     private void Start()
     {
@@ -17,28 +29,32 @@ public class GameMaster : MonoBehaviour
             gm = GameObject.FindGameObjectWithTag("GM").GetComponent<GameMaster>();
         }
 
-        gameOverUI.SetActive(false);
+       
+        if(SceneManager.GetActiveScene() == SceneManager.GetSceneByName("InfinityScene"))
+        {
+            AudioManager.instance.Play("InfinityMusic");
+            AudioManager.instance.Stop("MainMenuMusic");
 
-        AudioManager.instance.Stop("MainMenuMusic");
-        
-        AudioManager.instance.Play("InfinityMusic");
-
+        }
+        else if(SceneManager.GetActiveScene() == SceneManager.GetSceneByName("StoryScene"))
+        {
+            AudioManager.instance.Play("StoryMusic");
+            AudioManager.instance.Stop("MainMenuMusic");
+        }
     }
 
-
-          
-   
-
-    //public Transform enemyPrefab;
-    //public Transform spawnPoint;
-    //public float spawnDelay = 2;
-    //public GameObject spawnPrefab;
-
+    //We just check if player uses Escape key.
+    private void Update()
+    {
+        CheckPlayerPause();
+        CheckIfInstructionsNeeded();
+    }
 
     //Destroys player gameobject after 2seconds and call GameOver() method.
     public static void KillPlayer(Player player)
     {
         Destroy(player.gameObject, 2f);
+        player = null;
         gm.GameOver();
     }
     
@@ -49,10 +65,78 @@ public class GameMaster : MonoBehaviour
         
     }
 
+    public static void KillBoss(Enemy enemy)
+    {
+        Destroy(enemy.gameObject, 2f);
+        gm.GameWon();
+    }
     //Starts the GameOverScreen when called.
     public void GameOver()
     {
         Debug.Log("GAME OVER!");
         gameOverUI.SetActive(true);
     }
+
+    public void GameWon()
+    {
+        Debug.Log("GAME WON!");
+        gameWonUI.SetActive(true);
+
+    }
+
+
+    //Stops time out of everything that uses time. Pauses music and sets the pause screen active.
+    public void GamePaused()
+    {
+        Time.timeScale = 0;
+        AudioListener.pause = true;
+        pauseUI.SetActive(true);   
+    }
+
+    //Continue from pause screen, time is back to normal, audio back on.
+    public void GameContinue()
+    {
+        Time.timeScale = 1;
+        AudioListener.pause = false;
+        pauseUI.SetActive(false);
+         
+    }
+
+
+    public void CheckIfInstructionsNeeded()
+    {
+        if(SceneManager.GetActiveScene() == SceneManager.GetSceneByName("StoryScene"))
+        {
+            if(GameManager.level == 1)
+            {
+                storyIntructionsUI.SetActive(true);
+            }
+            else if(GameManager.level == 2)
+            {
+                storyIntructionsUI.SetActive(false);
+            }
+        }
+    }
+
+
+    //Checks if player uses escape key and checks if the game is allready paused and acts accordinly.
+    public void CheckPlayerPause()
+    {
+        if(Input.GetKeyDown(KeyCode.Escape))
+        {
+            if(!isPaused)
+            {
+                isPaused = !isPaused;
+                GamePaused();
+
+            }
+            else
+            {
+                isPaused = !isPaused;
+                GameContinue();
+            }
+            
+        }
+    }
+
 }

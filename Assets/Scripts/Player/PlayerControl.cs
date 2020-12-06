@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 
 //PlayerControl class controls the players movement.
@@ -11,20 +9,19 @@ public class PlayerControl : MonoBehaviour
     private float horizontalMove = 0f;
     private float verticalMove = 0f;
     private bool playerFacingRight = true;
-    private bool gamePaused = false;
 
     private Vector3 direction;
     private Rigidbody2D rigidBody;
     public Animator animator;
-   
 
-    // Start is called before the first frame update
+
     void Start()
     {
         rigidBody = GetComponent<Rigidbody2D>();
+        
     }
 
-    // Update is called once per frame
+
     void Update()
     { 
         GetInput();   

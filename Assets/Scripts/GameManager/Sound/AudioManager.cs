@@ -1,15 +1,20 @@
-﻿using UnityEngine.Audio;
-using System;
+﻿using System;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.Audio;
 
 
-/*CODE REFERENCE: https://www.youtube.com/watch?v=6OT43pvUyfY&ab_channel=Brackeys*/
+/*CODE REFERENCE: https://www.youtube.com/watch?v=6OT43pvUyfY&ab_channel=Brackeys */
 public class AudioManager : MonoBehaviour
 {
 
     public Sound[] sounds;
 
     public static AudioManager instance;
+
+    [HideInInspector]
+    public bool isMuted = false;
+
 
     private void Awake()
     {
@@ -37,6 +42,8 @@ public class AudioManager : MonoBehaviour
     }
 
 
+
+    //Method gets a music name as parameter and plays it. Checks if name is null for peace of mind.
     public void Play(string name)
     {
         Sound s = Array.Find(sounds, sound => sound.name == name);
@@ -47,6 +54,8 @@ public class AudioManager : MonoBehaviour
         s.source.Play();
     }
 
+
+    //Method gets a music name as parameter and stops playing it. Checks if name is null for peace of mind.
     public void Stop(string name)
     {
         Sound s = Array.Find(sounds, sound => sound.name == name);
@@ -57,14 +66,38 @@ public class AudioManager : MonoBehaviour
         s.source.Stop();
     }
 
-    public bool isPlaying(string name)
+
+    //Code below is not referenced!
+    //MuteMusic sets all volumes to 0 and changes isMuted variable.
+    public void MuteMusic()
     {
-        Sound s = Array.Find(sounds, sound => sound.name == name);
-        if (s == null)
+        isMuted = !isMuted;
+        for (int i = 0; i < sounds.Length; i++)
         {
-            Debug.Log("Sound: " + name + " not found!");
-            return false;
+           sounds[i].source.volume = 0f;
         }
-        return s.source.isPlaying;
+
+    }
+
+    //UnMuteMusic sets volume for specific value that is wanted for a specific music. Changes isMuted variable.
+    public void UnMuteMusic()
+    {
+        isMuted = !isMuted;
+        for (int i = 0; i < sounds.Length; i++)
+        {
+            if (sounds[i].name == "MainMenuMusic")
+            {
+                sounds[i].source.volume = 0.3f;
+            }
+            else if (sounds[i].name == "InfinityMusic")
+            {
+                sounds[i].source.volume = 0.1f;
+            }
+            else if (sounds[i].name == "StoryMusic")
+            {
+                sounds[i].source.volume = 0.1f;
+            }
+
+        }
     }
 }

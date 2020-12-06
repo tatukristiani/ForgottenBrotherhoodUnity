@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 /*This script handles the spawning of waves/levels in infinity mode.*/
+/*Example code taken from: https://www.youtube.com/watch?v=q0SBfDFn2Bs&ab_channel=Brackeys */
 public class WaveSpawner : MonoBehaviour
 {
 
@@ -30,7 +31,7 @@ public class WaveSpawner : MonoBehaviour
     public Transform[] spawnPoints;
 
     private float timeBetweenWaves = 5f;
-    private float waveCountdown;
+    private float waveCountdown; 
     private float enemyAliveCountdown;
 
     private Text levelText;
@@ -40,6 +41,9 @@ public class WaveSpawner : MonoBehaviour
 
 
     private SpawnState state = SpawnState.COUNTING;
+
+    //Checks if there is no spawnpoints and give error if so.
+    //Sets the wavecountdown and level text.
     void Start()
     {
         if (spawnPoints.Length == 0)
@@ -56,7 +60,7 @@ public class WaveSpawner : MonoBehaviour
 
     void Update()
     {
-        //When all enemies have beens spawned on current wave, the state is WAITING.
+        //When all enemies have been spawned on current wave, the state is WAITING.
         if(state == SpawnState.WAITING)
         {
             //CHECK IF ENEMIES ARE STILL ALIVE
@@ -117,6 +121,8 @@ public class WaveSpawner : MonoBehaviour
         
         waveNumber++;
         fixedWaveNumber++;
+
+        Debug.Log(fixedWaveNumber + "in spawner");
     }
 
     //SPAWNS ENEMIES FROM THE WAVE LIST WITH A CERTAIN SPAWNRATE. IEnumerator used so it is possible to have a delay in spawning the enemies.

@@ -56,3 +56,10 @@ MonoBehaviour:
     pitch: 1
     loop: 1
     source: {fileID: 0}
+  - name: StoryMusic
+    clip: {fileID: 8300000, guid: 8cd550da6c2c6b04f9270b7d9659113d, type: 3}
+    volume: 0.1
+    pitch: 1
+    loop: 1
+    source: {fileID: 0}
+  isMuted: 0

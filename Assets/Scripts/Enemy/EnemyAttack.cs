@@ -1,10 +1,9 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.SceneManagement;
 
 
 //EnemyAttack class handles the enemy "AI" and how it reacts to player position.
+//Lots of player != nulls can be found due to couple of errors in the past :D. Too scared to take them off.
 public class EnemyAttack : MonoBehaviour
 {
    
@@ -19,6 +18,7 @@ public class EnemyAttack : MonoBehaviour
 
     public GameObject projectile;
     private Transform player;
+    private GameObject playerPrefab;
     public Transform spellPosition;
     private Animator animator;
     private Vector3 originalPosition;
@@ -27,10 +27,13 @@ public class EnemyAttack : MonoBehaviour
     //On the Start() we check if we are on the infinity scene, set the detect distance so the enemies detect allways the player and increase the chase speed. 
     void Start()
     {
-        player = GameObject.FindGameObjectWithTag("Player").transform;
-        if (player != null)
+
+        playerPrefab = GameObject.FindGameObjectWithTag("Player");
+        
+        if (playerPrefab != null)
         {
-           
+            player = GameObject.FindGameObjectWithTag("Player").transform;
+            Debug.Log(player);
             animator = GetComponent<Animator>();
             timeBtwShots = startTimeBtwShots;
             originalPosition = gameObject.transform.position;
@@ -69,9 +72,11 @@ public class EnemyAttack : MonoBehaviour
 
             }
 
+
+            //Shooting cooldown.
             if (timeBtwShots <= 0)
             {
-                
+
                 animator.SetTrigger("EnemyUseSpell");
 
                 Instantiate(projectile, spellPosition.position, Quaternion.identity);
@@ -81,11 +86,11 @@ public class EnemyAttack : MonoBehaviour
             {
                 timeBtwShots -= Time.deltaTime;
             }
-        }    
+        }
     }
 
 
-    //Gets the distance betwenn player and enemy.
+    //Gets the distance between player and enemy.
     private float DistanceBetweenPlayerAndEnemy()
     {
         return Vector2.Distance(transform.position, player.position);
@@ -115,23 +120,29 @@ public class EnemyAttack : MonoBehaviour
         }
     }
 
+
+    //Chases player and changes movement according to distance between player and enemy.
     private void Chase()
     {
         if (player != null)
         {
             ChaseDirection();
 
+            //Chase player, animator set so the enemy is moving
             if (DistanceBetweenPlayerAndEnemy() > idleDistance)
             {
                 transform.position = Vector2.MoveTowards(transform.position, player.position, chaseSpeed * Time.deltaTime);
                 animator.SetFloat("EnemySpeed", chaseSpeed);
             }
 
-            else if (DistanceBetweenPlayerAndEnemy() < idleDistance && Vector2.Distance(transform.position, player.position) > retreatDistance)
+            //Stands still and keeps shooting. Animator set to stand still.
+            else if (DistanceBetweenPlayerAndEnemy() < idleDistance && DistanceBetweenPlayerAndEnemy() > retreatDistance)
             {
                 transform.position = this.transform.position;
                 animator.SetFloat("EnemySpeed", 0f);
             }
+
+            //Enemy starts to walk backward away from player and keeps shooting.
             else if (DistanceBetweenPlayerAndEnemy() < retreatDistance)
             {
                 transform.position = Vector2.MoveTowards(transform.position, player.position, -chaseSpeed * Time.deltaTime);
@@ -182,7 +193,7 @@ public class EnemyAttack : MonoBehaviour
     }
 
 
-    //Flips the characters facing.
+    //Flips the way that character is facing.
     private void Flip()
     {
         // Switch the way the player is labelled as facing

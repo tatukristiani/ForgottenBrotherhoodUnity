@@ -11,8 +11,8 @@ GameObject:
   - component: {fileID: 6357776193692543259}
   - component: {fileID: 6357776193692543256}
   - component: {fileID: 6357776193692543257}
-  - component: {fileID: 6357776193692543254}
   - component: {fileID: 1280870499643399791}
+  - component: {fileID: 6328252861131072952}
   m_Layer: 0
   m_Name: EnemyProjectile
   m_TagString: Spell
@@ -105,22 +105,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 1
   m_Constraints: 4
---- !u!58 &6357776193692543254
-CircleCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6357776193692543252}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0.040791314, y: 0.033033386}
-  serializedVersion: 2
-  m_Radius: 0.48108068
 --- !u!114 &1280870499643399791
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -135,3 +119,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fireballImpactEffect: {fileID: 3170955207033288427, guid: 3846448dd373a9345b7850030d5fc337,
     type: 3}
+--- !u!70 &6328252861131072952
+CapsuleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6357776193692543252}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0.12311565, y: 0.005572313}
+  m_Size: {x: 0.52306587, y: 0.32198858}
+  m_Direction: 1
