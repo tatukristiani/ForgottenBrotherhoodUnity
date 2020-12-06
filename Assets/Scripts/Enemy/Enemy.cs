@@ -10,7 +10,7 @@ public class Enemy : MonoBehaviour
     public Slider healthBarSlider;
     public GameObject enemyHealthBar;
     private float health;
-    private float maxHealth = 200f;
+    private float maxHealth = 80f;
     private float bossMaxHealth = 4000f;
     private float adjustHealth;
 
