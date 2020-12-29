@@ -14,7 +14,6 @@ public class BossProjectile : MonoBehaviour
     private float damage = 20f;
     private float speed = 15f;
 
-    private bool projectileFacingRight = true;
 
 
 
@@ -27,25 +26,26 @@ public class BossProjectile : MonoBehaviour
         {
 
             rb = GetComponent<Rigidbody2D>();
-            fireDirection = (player.transform.position - transform.position).normalized * speed; //projectiles direction is going towards the player current positon when the projectile is first created.
-            rb.velocity = new Vector2(fireDirection.x, fireDirection.y);
+            fireDirection = (player.transform.position - transform.position);
+            float rotationZ = Mathf.Atan2(fireDirection.y, fireDirection.x) * Mathf.Rad2Deg;
 
-            if (player.transform.position.x < transform.position.x)
-            {
-                if (projectileFacingRight)
-                {
-                    Flip();
-                }
-            }
-            else if (player.transform.position.x > transform.position.x)
-            {
-                if (!projectileFacingRight)
-                {
-                    Flip();
-                }
-            }
+            float distance = fireDirection.magnitude;
+            Vector2 dir = fireDirection / distance;
+            dir.Normalize();
+            EnemyShoot(dir, rotationZ);
+
         }
+
+
     }
+
+
+    private void EnemyShoot(Vector2 direction, float rotation)
+    {
+        transform.rotation = Quaternion.Euler(0.0f, 0.0f, rotation);
+        rb.velocity = direction * speed;
+    }
+
 
     //on player hit, explodes and deals damage to player. Destroys projectile object. Explodes on wall, but no damage applied.
     private void OnTriggerEnter2D(Collider2D collision)
@@ -60,17 +60,6 @@ public class BossProjectile : MonoBehaviour
             }
             Destroy(gameObject);
         }
-    }
-
-    private void Flip()
-    {
-        // Switch the way the player is labelled as facing
-        projectileFacingRight = !projectileFacingRight;
-
-        // Multiply the player's x local scale by -1.
-        Vector3 theScale = transform.localScale;
-        theScale.x *= -1;
-        transform.localScale = theScale;
     }
 }
 

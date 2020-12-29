@@ -64,8 +64,6 @@ public class Boss : MonoBehaviour
             if (timeBtwShots <= 0)
             {
 
-                //animator.SetTrigger("EnemyUseSpell");
-
                 Instantiate(projectile, spellPosition.position, Quaternion.identity);
                 timeBtwShots = startTimeBtwShots;
             }

@@ -11,28 +11,38 @@ public class PlayerAttack : MonoBehaviour
     public GameObject projectile;
     public Transform fireballPosition;
     public Animator animator;
+    private Vector2 mousePosition;
+    private Vector2 direction;
+    private Vector2 myPosition;
+
    
     private float projectileForce = 15f;
 
 
     void Update()
     {
-        if(Input.GetMouseButtonDown(0))
+        mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition); //where mouse is
+        myPosition = fireballPosition.position; //shooting startingpoint
+        direction = (mousePosition - myPosition); //direction is towards mouse
+        float rotationZ = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg; //rotates projectile
+
+        if (Input.GetMouseButtonDown(0))
         {
-            Shoot();
+            float distance = direction.magnitude;
+            Vector2 dir = direction / distance;
+            dir.Normalize();
+            Shoot(dir, rotationZ);
         }
     }
 
-    /*When the user presses the right mouse button, characters animation for cast is triggered and the direction of the projectile is calculated with vectors.
-     * Then we create the fireball projectile and give it speed and damage.
-    */
-    private void Shoot()
+  
+    //method need direction where to shoot and rotation of projectile
+    private void Shoot(Vector2 direction, float rotationZ)
     {  
         animator.SetTrigger("SpellCastTrigger");
-        Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        Vector2 myPosition = fireballPosition.position;
-        Vector2 direction = (mousePosition - myPosition).normalized;
-        GameObject spell = Instantiate(projectile, fireballPosition.position, fireballPosition.rotation);
+        GameObject spell = Instantiate(projectile) as GameObject; 
+        spell.transform.position = fireballPosition.transform.position;
+        spell.transform.rotation = Quaternion.Euler(0.0f, 0.0f, rotationZ);
         spell.GetComponent<Rigidbody2D>().velocity = direction * projectileForce;
         spell.GetComponent<Projectile>().damage = 20;
     }

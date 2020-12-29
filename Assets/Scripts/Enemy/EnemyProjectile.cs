@@ -10,7 +10,6 @@ public class EnemyProjectile : MonoBehaviour
     private GameObject player;
     private Vector2 fireDirection;
 
-    private bool enemyProjectileFacingRight = true;
     private float damage = 10f;
     private float speed = 8f;
 
@@ -23,26 +22,22 @@ public class EnemyProjectile : MonoBehaviour
         { 
            
             rb = GetComponent<Rigidbody2D>();
-            fireDirection = (player.transform.position - transform.position).normalized * speed; //projectiles direction is going towards the player current positon when the projectile is first created.
-            rb.velocity = new Vector2(fireDirection.x, fireDirection.y);
+            fireDirection = (player.transform.position - transform.position); 
+            float rotationZ = Mathf.Atan2(fireDirection.y, fireDirection.x) * Mathf.Rad2Deg;
 
+            float distance = fireDirection.magnitude;
+            Vector2 dir = fireDirection / distance;
+            dir.Normalize();
+            EnemyShoot(dir, rotationZ);
 
-            //we flip the projectile to right/left by figuring the x position of players and projectiles position.
-            if (player.transform.position.x < transform.position.x)
-            {
-                if (enemyProjectileFacingRight)
-                {
-                    Flip();
-                }
-            }
-            else if (player.transform.position.x > transform.position.x)
-            {
-                if (!enemyProjectileFacingRight)
-                {
-                    Flip();
-                }
-            }
         } 
+    }
+
+
+    private void EnemyShoot(Vector2 direction, float rotation)
+    {
+        transform.rotation = Quaternion.Euler(0.0f, 0.0f, rotation);
+        rb.velocity = direction * speed;
     }
 
 
@@ -60,18 +55,5 @@ public class EnemyProjectile : MonoBehaviour
             }
             Destroy(gameObject);
         }
-    }
-
-
-    //Flips the character/projectile from right -> left and left -> right
-    private void Flip()
-    {
-        // Switch the way the player is labelled as facing
-        enemyProjectileFacingRight = !enemyProjectileFacingRight;
-
-        // Multiply the player's x local scale by -1.
-        Vector3 theScale = transform.localScale;
-        theScale.x *= -1;
-        transform.localScale = theScale;
     }
 }
